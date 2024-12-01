@@ -27,9 +27,10 @@ object Main {
       |  val input1: String = readFile("src/main/scala/day$day/input1")
       |
       |  def main(args: Array[String]): Unit = {
-      |    solve(input1)
+      |    solve1
       |  }
-      |  private def solve(input1: String) = ???
+      |  private def solve1 = ???
+      |  private def solve2 = ???
       |}
       |""".stripMargin
   }
