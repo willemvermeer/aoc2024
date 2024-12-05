@@ -1,9 +1,8 @@
-
 package day5
+import util.SeqUtil.swap
 import util.{Pair, ReadFile, SeqUtil}
 
-
-object Day5 extends ReadFile{
+object Day5 extends ReadFile {
   val example =
     """47|53
       |97|13
@@ -41,24 +40,24 @@ object Day5 extends ReadFile{
     println(solve1(example))
     println(solve1(input1))
     println(solve2(example))
-//    println(solve2(input1))
+    println(solve2(input1))
   }
   private def ruleOk(s: Seq[Int], applicableRules: Seq[Pair[Int]]): Boolean = {
     s.dropRight(1).forall { page =>
       applicableRules.filter(_.l == page).forall(p => s.indexOf(page) < s.indexOf(p.r)) &&
-        applicableRules.filter(_.r == page).forall(p => s.indexOf(page) > s.indexOf(p.l))
+      applicableRules.filter(_.r == page).forall(p => s.indexOf(page) > s.indexOf(p.l))
     }
   }
   private def solve1(s: String) = {
     val (rules, updates) = readInput(s)
-    val correctUpdates = updates.filter { update =>
+    val correctUpdates   = updates.filter { update =>
       val applicableRules = rules.filter(p => update.contains(p.l) && update.contains(p.r))
       ruleOk(update, applicableRules)
     }
     correctUpdates.map(seq => seq(seq.size / 2)).sum
   }
   private def readInput(s: String) = {
-    val top = s.split("\n\n")
+    val top  = s.split("\n\n")
     val top1 = top(0).split("\n").map(_.split('|').map(_.toInt).toSeq).toSeq.map(s => Pair(s.head, s.tail.head))
     val top2 = top(1).split("\n").map(_.split(',').map(_.toInt).toSeq).toSeq
     (top1, top2)
@@ -70,23 +69,18 @@ object Day5 extends ReadFile{
       val applicableRules = rules.filter(p => update.contains(p.l) && update.contains(p.r))
       !ruleOk(update, applicableRules)
     }
-    incorrectUpdates.map { update =>
-      println(update)
-      val applicableRules = rules.filter(p => update.contains(p.l) && update.contains(p.r))
-      val reshuffle = update.tail.foldLeft[Seq[Int]](Seq(update.head)) { case (acc, page) =>
-        println(acc + ":" + page)
-        (0 to acc.size).find{i =>
-          val newseq = SeqUtil.insert(page, acc, i)
-          println(newseq)
-          ruleOk(newseq, applicableRules)} match {
-          case Some(i) => SeqUtil.insert(page, acc, i)
-          case None    => println("Cannot happen")
-          Seq()
-        }
-      }
-      println(reshuffle)
-    }
+    incorrectUpdates.map(update => reOrder(update, rules)).map(seq => seq(seq.size / 2)).sum
   }
-
-
+  def reOrder(start: Seq[Int], rules: Seq[Pair[Int]]): Seq[Int] = {
+    var result          = start
+    val applicableRules = rules.filter(p => result.contains(p.l) && result.contains(p.r))
+    while (!ruleOk(result, applicableRules)) {
+      applicableRules.find(r => result.indexOf(r.l) > result.indexOf(r.r)) match {
+        case Some(pair) =>
+          result = swap(result, result.indexOf(pair.l), result.indexOf(pair.r))
+        case None       => ()
+      }
+    }
+    result
+  }
 }
