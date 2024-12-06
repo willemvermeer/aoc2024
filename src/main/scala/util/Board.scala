@@ -6,6 +6,25 @@ case class Board[T](rows: Seq[Seq[T]]) {
   def width                    = rows.head.length
   def height                   = rows.length
 
+  def update(elt: T, pos: Point) = {
+    Board(rows.zipWithIndex.map {
+      case (row, r) =>
+        row.zipWithIndex.map {
+          case (col, c) =>
+            if (Point(c, r) == pos) elt else col
+        }
+    })
+  }
+  def position(elt: T): Point = {
+    (for {
+      row <- (0 until height)
+      col <- (0 until width)
+      if value(col, row) == elt
+    } yield {
+      Point(col, row)
+    }).head
+  }
+
   def adj(p: Point) =
     Seq(
       Point(p.x - 1, p.y - 1),
@@ -20,6 +39,10 @@ case class Board[T](rows: Seq[Seq[T]]) {
 
   override def toString: String =
     rows.map(row => row.mkString(" ")).mkString("\n")
+
+  def outside(p: Point): Boolean =
+    p.x < 0 || p.y < 0 || p.x >= width || p.y >= height
+
 }
 
 object Board {

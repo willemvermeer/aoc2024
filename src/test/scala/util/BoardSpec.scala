@@ -27,4 +27,22 @@ class BoardSpec extends AnyFunSuite {
       )
     )
   }
+  test("outside") {
+    val b = Board("AB\nCD")
+    assert(b.outside(Point(-1, 1)))
+    assert(b.outside(Point(0, 2)))
+    assert(b.outside(Point(1, -1)))
+    assert(b.outside(Point(1, 2)))
+    assert(!b.outside(Point(0, 0)))
+    assert(!b.outside(Point(0, 1)))
+    assert(!b.outside(Point(1, 0)))
+    assert(!b.outside(Point(1, 1)))
+  }
+  test("update") {
+    val b = Board("AB\nCD")
+    assert(Board("QB\nCD") == b.update('Q', Point(0, 0)))
+    assert(Board("AQ\nCD") == b.update('Q', Point(1, 0)))
+    assert(Board("AB\nQD") == b.update('Q', Point(0, 1)))
+    assert(Board("AB\nCQ") == b.update('Q', Point(1, 1)))
+  }
 }
