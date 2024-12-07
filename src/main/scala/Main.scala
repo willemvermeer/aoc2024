@@ -14,7 +14,7 @@ object Main {
     val cookieValue = getSessionCookie
     val r           =
       requests.get(s"https://adventofcode.com/2024/day/$day/input", headers = Seq(("cookie", s"session=$cookieValue")))
-    writeFile(s"${fDayBase(day)}/input1", r.text())
+    writeFile(s"${fDayBase(day)}/input", r.text())
     writeFile(s"${fDayBase(day)}/Day$day.scala", mainDay(day))
   }
 
@@ -24,13 +24,15 @@ object Main {
       |import util.ReadFile
       |
       |object Day$day extends ReadFile{
-      |  val input1: String = readFile("src/main/scala/day$day/input1")
+      |  val input: String = readFile("src/main/scala/day$day/input")
+      |  val example: String = ???
       |
       |  def main(args: Array[String]): Unit = {
-      |    solve1
+      |    solve1(example)
+      |    solve1(input)
       |  }
-      |  private def solve1 = ???
-      |  private def solve2 = ???
+      |  private def solve1(s: String) = ???
+      |  private def solve2(s: String) = ???
       |}
       |""".stripMargin
   }
