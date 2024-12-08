@@ -43,6 +43,19 @@ case class Board[T](rows: Seq[Seq[T]]) {
   def outside(p: Point): Boolean =
     p.x < 0 || p.y < 0 || p.x >= width || p.y >= height
 
+  def inside(p: Point): Boolean = !outside(p)
+
+  def noSpace: String = {
+    rows.map(row => row.mkString("")).mkString("\n")
+  }
+
+  def all: Seq[Point] =
+    for {
+      row <- (0 until height)
+      col <- (0 until width)
+    } yield {
+      Point(col, row)
+    }
 }
 
 object Board {
