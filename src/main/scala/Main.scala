@@ -29,7 +29,9 @@ object Main {
       |
       |  def main(args: Array[String]): Unit = {
       |    solve1(example)
-      |    solve1(input)
+      |    // solve1(input)
+      |    // solve2(example)
+      |    // solve2(input)
       |  }
       |  private def solve1(s: String) = ???
       |  private def solve2(s: String) = ???
