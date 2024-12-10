@@ -27,6 +27,14 @@ class BoardSpec extends AnyFunSuite {
       )
     )
   }
+  test("adjHV right top corner") {
+    val b = Board("AB\nBA")
+    assert(b.adjHV(Point(1, 0)).toSet == Set(Point(1, 1), Point(0, 0)))
+  }
+  test("adjHV middle") {
+    val b = Board("ABC\nBCA\nCAB")
+    assert(b.adjHV(Point(1, 1)).toSet == Set(Point(0, 1), Point(2, 1), Point(1, 0), Point(1, 2)))
+  }
   test("outside") {
     val b = Board("AB\nCD")
     assert(b.outside(Point(-1, 1)))

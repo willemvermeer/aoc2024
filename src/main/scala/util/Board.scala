@@ -37,6 +37,14 @@ case class Board[T](rows: Seq[Seq[T]]) {
       Point(p.x + 1, p.y + 1)
     ).filter(p => p.x >= 0 && p.y >= 0 && p.x < width && p.y < height)
 
+  def adjHV(p: Point) =
+    Seq(
+      Point(p.x, p.y - 1),
+      Point(p.x - 1, p.y),
+      Point(p.x + 1, p.y),
+      Point(p.x, p.y + 1)
+    ).filter(p => p.x >= 0 && p.y >= 0 && p.x < width && p.y < height)
+
   override def toString: String =
     rows.map(row => row.mkString(" ")).mkString("\n")
 
