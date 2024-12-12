@@ -3,7 +3,13 @@ package util
 case class Point(x: Int, y: Int) {
   override def toString: String = s"($x,$y)"
 
-  def dist(p: Point) = Math.abs(x - p.x) + Math.abs(y - p.y)
+  def dist(p: Point)                 = Math.abs(x - p.x) + Math.abs(y - p.y)
+  def areNeighbours(p: Point)        =
+    ((x == p.x) && (y == p.y + 1)) ||
+      ((x == p.x) && (y == p.y - 1)) ||
+      ((x == p.x + 1) && (y == p.y)) ||
+      ((x == p.x - 1) && (y == p.y))
+  def neighbours(points: Seq[Point]) = points.filter(areNeighbours)
 }
 
 object Point {

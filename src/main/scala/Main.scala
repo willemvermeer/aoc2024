@@ -28,13 +28,13 @@ object Main {
       |  val example: String = ???
       |
       |  def main(args: Array[String]): Unit = {
-      |    solve1(example)
-      |    // solve1(input)
-      |    // solve2(example)
-      |    // solve2(input)
+      |    println(solve1(example))
+      |    // println(solve1(input))
+      |    // println(solve2(example))
+      |    // println(solve2(input))
       |  }
-      |  private def solve1(s: String) = ???
-      |  private def solve2(s: String) = ???
+      |  private def solve1(s: String): Int = ???
+      |  private def solve2(s: String): Int = ???
       |}
       |""".stripMargin
   }
