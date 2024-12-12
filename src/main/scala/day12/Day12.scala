@@ -26,9 +26,9 @@ object Day12 extends ReadFile {
 //    println(solve1(example))
 //    println(solve1(example1))
 //    println(solve1(example2))
-//     println(solve1(input))
-    println(solve2(example))
-    println(solve2(example1))
+    println(solve1(input))
+//    println(solve2(example))
+//    println(solve2(example1))
     println(solve2(input))
     // solve2(input)
   }
@@ -40,7 +40,6 @@ object Day12 extends ReadFile {
     val regions    = calcRegions(s)
     val b          = Board(s.trim())
     val allRegions = regions.flatMap(_._2).toSeq
-    println(allRegions)
     allRegions.map { region =>
       val edges = region.points.foldLeft[Set[Edge]](Set()) {
         case (acc, elt) =>
@@ -106,7 +105,6 @@ object Day12 extends ReadFile {
                 case None     => r +: acc
               }
           }
-          println(reg_ult.length)
         }
         c -> reg_ult
     }
