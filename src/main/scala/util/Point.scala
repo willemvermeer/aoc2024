@@ -9,6 +9,15 @@ case class Point(x: Int, y: Int) {
       ((x == p.x) && (y == p.y - 1)) ||
       ((x == p.x + 1) && (y == p.y)) ||
       ((x == p.x - 1) && (y == p.y))
+  def areNeighboursDiag(p: Point)    =
+    ((x == p.x) && (y == p.y + 1)) ||
+      ((x == p.x) && (y == p.y - 1)) ||
+      ((x == p.x + 1) && (y == p.y)) ||
+      ((x == p.x - 1) && (y == p.y)) ||
+      ((x == p.x + 1) && (y == p.y + 1)) ||
+      ((x == p.x - 1) && (y == p.y - 1)) ||
+      ((x == p.x + 1) && (y == p.y + 1)) ||
+      ((x == p.x - 1) && (y == p.y - 1))
   def neighbours(points: Seq[Point]) = points.filter(areNeighbours)
 }
 
