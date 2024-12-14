@@ -20,11 +20,10 @@ object Day13 extends ReadFile {
                           |Prize: X=18641, Y=10279""".stripMargin
 
   def main(args: Array[String]): Unit = {
-//    println(solve1(example))
-//    println(solve1(input))
-    // println(solve1(input))
+    println(solve1(example))
+    println(solve1(input))
     println(solve2(example))
-//    println(solve2(input))
+    println(solve2(input))
   }
   private def solve1(s: String): Int = {
     val arcades = read(s)
@@ -46,29 +45,30 @@ object Day13 extends ReadFile {
       }
       .toSeq
   }
-  private def solve2(s: String): Int = {
+  private def solve2(s: String): Long = {
     val arcades = read(s)
-    val result  = arcades.map(_.add).map { arc =>
-      val (x, y)   = arc.solution
-      val xint     = Math.round(x)
-      val yint     = Math.round(y)
-      val (ax, ay) = (arc.a.x * xint, arc.a.y * yint)
-      val (bx, by) = (arc.b.x * xint, arc.b.y * yint)
-      println((ax + bx) + ":" + arc.x + ";" + (ay + by) + ":" + arc.y)
-//      val ssum = (3 * sum1) + sum2
-//      println(ssum + ";" + arc.x + ":" + arc.y)
-    }
-    println(result)
-    0
+    arcades
+      .map(_.add)
+      .map { arc =>
+        val (x, y) = arc.solution
+        val xint   = Math.round(x)
+        val yint   = Math.round(y)
+        val res1   = xint * arc.a.x + yint * arc.b.x
+        val res2   = xint * arc.a.y + yint * arc.b.y
+        if (res1 == arc.x && res2 == arc.y) {
+          3 * xint + yint
+        } else 0
+      }
+      .sum
   }
 }
 case class Button(x: Int, y: Int)
 case class Arcade(a: Button, b: Button, x: Long, y: Long) {
   def add = Arcade(a, b, x + 10000000000000L, y + 10000000000000L)
   def solution = {
-    val fact = (1.0 * a.y) / b.y
+    val fact = (1.0 * b.x) / b.y
     val xr   = (fact * y - x) / ((a.y * fact) - a.x)
-    val yr   = x - (a.x * xr)
+    val yr   = (1.0 * x - (a.x * xr)) / b.x
     (xr, yr)
   }
 }
