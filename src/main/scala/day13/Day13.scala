@@ -24,7 +24,7 @@ object Day13 extends ReadFile {
 //    println(solve1(input))
     // println(solve1(input))
     println(solve2(example))
-    println(solve2(input))
+//    println(solve2(input))
   }
   private def solve1(s: String): Int = {
     val arcades = read(s)
@@ -48,11 +48,15 @@ object Day13 extends ReadFile {
   }
   private def solve2(s: String): Int = {
     val arcades = read(s)
-    val result  = arcades.map { arc =>
-      val (x, y) = arc.add.solution
-      val sum1   = arc.a.x * x + arc.a.y * y
-      val sum2   = arc.a.y * x + arc.b.y * y
-      println(sum1 + ":" + sum2)
+    val result  = arcades.map(_.add).map { arc =>
+      val (x, y)   = arc.solution
+      val xint     = Math.round(x)
+      val yint     = Math.round(y)
+      val (ax, ay) = (arc.a.x * xint, arc.a.y * yint)
+      val (bx, by) = (arc.b.x * xint, arc.b.y * yint)
+      println((ax + bx) + ":" + arc.x + ";" + (ay + by) + ":" + arc.y)
+//      val ssum = (3 * sum1) + sum2
+//      println(ssum + ";" + arc.x + ":" + arc.y)
     }
     println(result)
     0
