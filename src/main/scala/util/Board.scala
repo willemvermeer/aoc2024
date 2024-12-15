@@ -57,6 +57,12 @@ case class Board[T](rows: Seq[Seq[T]]) {
     rows.map(row => row.mkString("")).mkString("\n")
   }
 
+  def swap(p1: Point, p2: Point): Board[T] = {
+    val v1 = value(p1)
+    val v2 = value(p2)
+    update(v1, p2).update(v2, p1)
+  }
+
   def all: Seq[Point] =
     for {
       row <- (0 until height)
