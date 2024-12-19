@@ -42,9 +42,9 @@ object Day16      extends ReadFile {
 //    println(solve1(example))
 //    println(solve1(example2))
 //    println(solve1(input))
-     println(solve2(example))
-     println(solve2(example2))
-     println(solve2(input))
+    println(solve2(example))
+    println(solve2(example2))
+    println(solve2(input))
   }
   // 490 too low
   // 500 incorrect
@@ -54,7 +54,7 @@ object Day16      extends ReadFile {
     mmap.filter(_._2.score == min).keys.head
   }
   private def solve1(s: String): Int = {
-    val b = read(s)
+    val b      = read(s)
     val target = b.all.find(p => b.value(p) == 'E').get
     doIt(b)(target).score
   }
@@ -76,18 +76,21 @@ object Day16      extends ReadFile {
 //      }
       val currentValue: State = unvisited(nextPoint)
       val up                  = Point(nextPoint.x, nextPoint.y - 1)
-      val nextScoreUp = if (currentValue.direction == Up) currentValue.score + 1 else currentValue.score + 1001
+      val nextScoreUp         = if (currentValue.direction == Up) currentValue.score + 1 else currentValue.score + 1001
       if (unvisited.keys.toSeq.contains(up)) {
         if (nextScoreUp < unvisited(up).score) {
-          unvisited.put(up, unvisited(up).copy(score = nextScoreUp, direction = Up, history = currentValue.history :+ up))
+          unvisited.put(
+            up,
+            unvisited(up).copy(score = nextScoreUp, direction = Up, history = currentValue.history :+ up)
+          )
         }
       } else if (visited.contains(up) && nextScoreUp == visited(up).score + 1000) {
 //        println("UPPP")
-        if (up!=target)
-        visited.put(up, visited(up).copy(alternatives = visited(up).alternatives :+ currentValue.history))
+        if (up != target)
+          visited.put(up, visited(up).copy(alternatives = visited(up).alternatives :+ currentValue.history))
       }
       val down                = Point(nextPoint.x, nextPoint.y + 1)
-      val nextScoreDown = if (currentValue.direction == Down) currentValue.score + 1 else currentValue.score + 1001
+      val nextScoreDown       = if (currentValue.direction == Down) currentValue.score + 1 else currentValue.score + 1001
       if (unvisited.keys.toSeq.contains(down)) {
         if (nextScoreDown < unvisited(down).score) {
           unvisited.put(
@@ -97,11 +100,11 @@ object Day16      extends ReadFile {
         }
       } else if (visited.contains(down) && nextScoreDown == visited(down).score + 1000) {
 //        println("UDOWBN")
-        if (down!=target)
-        visited.put(down, visited(down).copy(alternatives = visited(down).alternatives :+ currentValue.history))
+        if (down != target)
+          visited.put(down, visited(down).copy(alternatives = visited(down).alternatives :+ currentValue.history))
       }
       val left                = Point(nextPoint.x - 1, nextPoint.y)
-      val nextScoreLeft = if (currentValue.direction == Left) currentValue.score + 1 else currentValue.score + 1001
+      val nextScoreLeft       = if (currentValue.direction == Left) currentValue.score + 1 else currentValue.score + 1001
       if (unvisited.keys.toSeq.contains(left)) {
         if (nextScoreLeft < unvisited(left).score) {
           unvisited.put(
@@ -111,11 +114,11 @@ object Day16      extends ReadFile {
         }
       } else if (visited.contains(left) && nextScoreLeft == visited(left).score + 1000) {
 //        println("LEFT")
-        if (left!=target)
-        visited.put(left, visited(left).copy(alternatives = visited(left).alternatives :+ currentValue.history))
+        if (left != target)
+          visited.put(left, visited(left).copy(alternatives = visited(left).alternatives :+ currentValue.history))
       }
       val right               = Point(nextPoint.x + 1, nextPoint.y)
-      val nextScoreRight = if (currentValue.direction == Right) currentValue.score + 1 else currentValue.score + 1001
+      val nextScoreRight      = if (currentValue.direction == Right) currentValue.score + 1 else currentValue.score + 1001
       if (unvisited.keys.toSeq.contains(right)) {
         if (nextScoreRight < unvisited(right).score) {
           unvisited.put(
@@ -125,8 +128,8 @@ object Day16      extends ReadFile {
         }
       } else if (visited.contains(right) && nextScoreRight == visited(right).score + 1000) {
 //        println("RIGHT")
-        if (right!=target)
-        visited.put(right, visited(right).copy(alternatives = visited(right).alternatives :+ currentValue.history))
+        if (right != target)
+          visited.put(right, visited(right).copy(alternatives = visited(right).alternatives :+ currentValue.history))
       }
       visited.put(nextPoint, unvisited(nextPoint))
       unvisited.remove(nextPoint)
@@ -138,26 +141,27 @@ object Day16      extends ReadFile {
   private def read(s: String) = Board(s)
 
   private def solve2(s: String): Int = {
-    val b = read(s)
-    val start   = b.all.find(p => b.value(p) == 'S').get
-    val target   = b.all.find(p => b.value(p) == 'E').get
-    val all = b.all.filter(p => b.value(p) != '#')
-    val res = doIt(b)
+    val b      = read(s)
+    val start  = b.all.find(p => b.value(p) == 'S').get
+    val target = b.all.find(p => b.value(p) == 'E').get
+    val all    = b.all.filter(p => b.value(p) != '#')
+    val res    = doIt(b)
     val answer = res(target).history.flatMap(p => p +: res(p).alternatives.flatten.distinct).distinct
-    val allll = (res(target).history.reverse.sliding(2).foldLeft[Seq[Point]](Seq()) { case (acc,seq) =>
-      val p1 = seq.head
-      val p2 = seq.reverse.head
-      val nn = p2.neighbours(all).filterNot(_==p1)
-      val nb = nn.map(res(_)).map(_.score)
+    val allll  = (res(target).history.reverse.sliding(2).foldLeft[Seq[Point]](Seq()) {
+      case (acc, seq) =>
+        val p1 = seq.head
+        val p2 = seq.reverse.head
+        val nn = p2.neighbours(all).filterNot(_ == p1)
+        val nb = nn.map(res(_)).map(_.score)
 //      println(p1 + ":" + p2 + ";" + nb.mkString(","))
 //      println(res(p1). + ":" + res(p2))
-      if (nb.size ==2) {
-        if (opposite(nn.map(res(_)).map(_.direction)) && nb.head == nb.reverse.head) {
-          acc ++ res(nn.head).history ++ res(nn.reverse.head).history
-        } else if (!opposite(nn.map(res(_)).map(_.direction))&& Math.abs(nb.head - nb.reverse.head) == 1000) {
-          acc ++ res(nn.head).history ++ res(nn.reverse.head).history
+        if (nb.size == 2) {
+          if (opposite(nn.map(res(_)).map(_.direction)) && nb.head == nb.reverse.head) {
+            acc ++ res(nn.head).history ++ res(nn.reverse.head).history
+          } else if (!opposite(nn.map(res(_)).map(_.direction)) && Math.abs(nb.head - nb.reverse.head) == 1000) {
+            acc ++ res(nn.head).history ++ res(nn.reverse.head).history
+          } else acc :+ p2
         } else acc :+ p2
-      } else acc :+ p2
 //      if (nb.size == 2 && (Math.abs(nb.head - nb.reverse.head) == 1000 || nb.head == nb.reverse.head)) {
 //        println("beide")
 //        acc ++ res(nn.head).history ++ res(nn.reverse.head).history
@@ -166,7 +170,7 @@ object Day16      extends ReadFile {
     } ++ Seq(start, target)).distinct
     println(allll.size)
     allll.size
-    println(allll.foldLeft[Board[Char]](b){ case (acc, elt) => acc.update('O',elt)}.noSpace)
+    println(allll.foldLeft[Board[Char]](b) { case (acc, elt) => acc.update('O', elt) }.noSpace)
 //    1 + res(target).history.flatMap(p => p +: res(p).alternatives.flatten.distinct).distinct.size
     allll.size
   }
